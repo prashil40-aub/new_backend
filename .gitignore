@@ -1,0 +1,10 @@
+node_modules/
+dist/
+yarn-error*.log
+notes
+private.pem
+/public/
+/uploads/
+env/
+.vscode
+package-lock.json
