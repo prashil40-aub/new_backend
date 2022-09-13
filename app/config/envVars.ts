@@ -28,17 +28,18 @@ type IEnv = {
   COOKIE_SECRET: string;
   COOKIE_EXP: string;
   JWT_EXPIRES_IN: string;
-  DB_PORT: number;
-  DB_NAME: string;
-  DB_USER: string;
-  DB_DIALECT: string;
-  DB_PASSWORD: string;
-  DB_HOST: string;
-  SMTP_PORT: number;
-  SMTP_HOST: string;
-  SMTP_USERNAME: string;
-  SMTP_PASSWORD: string;
-  EMAIL_FROM: string;
+  // DB_PORT: number;
+  // DB_NAME: string;
+  // DB_USER: string;
+  // DB_DIALECT: string;
+  // DB_PASSWORD: string;
+  // DB_HOST: string;
+  DB_URL: string;
+  // SMTP_PORT: number;
+  // SMTP_HOST: string;
+  // SMTP_USERNAME: string;
+  // SMTP_PASSWORD: string;
+  // EMAIL_FROM: string;
   JET_LOGGER_TIMESTAMP: boolean;
   JET_LOGGER_MODE: string;
   JET_LOGGER_FILEPATH: string;
@@ -53,17 +54,19 @@ const envVarsSchema = Joi.object<IEnv>()
     COOKIE_EXP: Joi.string().default('').description('Cookie Expire Time').required(),
     JWT_EXPIRES_IN: Joi.string().default('1h').description('JWT Expire Time').required(),
 
-    DB_PORT: Joi.number().description('port to connect to the Database').required(),
-    DB_NAME: Joi.string().description('Database Name to connect to the Database').required(),
-    DB_USER: Joi.string().description('Database User to connect to the Database').required(),
-    DB_DIALECT: Joi.string().description('Dialect to connect to the Database').required(),
-    DB_PASSWORD: Joi.string().description('Password to connect to the email server'),
-    DB_HOST: Joi.string().description('Host to connect to the Database').required(),
-    SMTP_HOST: Joi.string().description('server that will send the emails'),
-    SMTP_PORT: Joi.number().description('port to connect to the email server'),
-    SMTP_USERNAME: Joi.string().description('username for email server'),
-    SMTP_PASSWORD: Joi.string().description('password for email server'),
-    EMAIL_FROM: Joi.string().description('the from field in the emails sent by the app'),
+    // DB_PORT: Joi.number().description('port to connect to the Database').required(),
+    // DB_NAME: Joi.string().description('Database Name to connect to the Database').required(),
+    // DB_USER: Joi.string().description('Database User to connect to the Database').required(),
+    // DB_DIALECT: Joi.string().description('Dialect to connect to the Database').required(),
+    // DB_PASSWORD: Joi.string().description('Password to connect to the email server'),
+    // DB_HOST: Joi.string().description('Host to connect to the Database').required(),
+
+    DB_URL: Joi.string().description('URL to connect'),
+    // SMTP_HOST: Joi.string().description('server that will send the emails'),
+    // SMTP_PORT: Joi.number().description('port to connect to the email server'),
+    // SMTP_USERNAME: Joi.string().description('username for email server'),
+    // SMTP_PASSWORD: Joi.string().description('password for email server'),
+    // EMAIL_FROM: Joi.string().description('the from field in the emails sent by the app'),
     JET_LOGGER_TIMESTAMP: Joi.boolean().default(false).description('JET_LOGGER_TIMESTAMP'),
     JET_LOGGER_MODE: Joi.string().default('CONSOLE').description('JET_LOGGER_MODE'),
     JET_LOGGER_FILEPATH: Joi.string().description('JET_LOGGER_FILEPATH'),
@@ -81,29 +84,30 @@ const envVars = {
   env: value.NODE_ENV,
   port: value.PORT,
   db: {
-    host: value.DB_HOST,
-    name: value.DB_NAME,
-    port: value.DB_PORT,
-    user: value.DB_USER,
-    dialect: value.DB_DIALECT,
-    password: value.DB_PASSWORD,
+    // host: value.DB_HOST,
+    // name: value.DB_NAME,
+    // port: value.DB_PORT,
+    // user: value.DB_USER,
+    // dialect: value.DB_DIALECT,
+    // password: value.DB_PASSWORD,
+    url: value.DB_URL,
   },
   jwt: {
     jwtExpireIn: value.JWT_EXPIRES_IN,
     cookieExpire: value.COOKIE_EXP,
     cookieSecret: value.COOKIE_SECRET,
   },
-  email: {
-    smtp: {
-      host: value.SMTP_HOST,
-      port: value.SMTP_PORT,
-      auth: {
-        user: value.SMTP_USERNAME,
-        pass: value.SMTP_PASSWORD,
-      },
-    },
-    from: value.EMAIL_FROM,
-  },
+  // email: {
+  //   smtp: {
+  //     host: value.SMTP_HOST,
+  //     port: value.SMTP_PORT,
+  //     auth: {
+  //       user: value.SMTP_USERNAME,
+  //       pass: value.SMTP_PASSWORD,
+  //     },
+  //   },
+  //   from: value.EMAIL_FROM,
+  // },
   logger: {
     JET_LOGGER_TIMESTAMP: value.JET_LOGGER_TIMESTAMP,
     JET_LOGGER_MODE: value.JET_LOGGER_MODE,

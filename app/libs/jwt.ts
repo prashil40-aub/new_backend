@@ -1,6 +1,6 @@
-import fs from 'fs';
+// import fs from 'fs';
 import jwt from 'jsonwebtoken';
-import { envVars, paths } from '@/config';
+// import {  paths } from '@/config';
 import logger from './logger';
 
 /**
@@ -10,7 +10,8 @@ import logger from './logger';
 export default class JwtUtil {
   private static algorithmName: jwt.Algorithm = 'HS256';
 
-  private static privateKey = fs.readFileSync(paths.pemPath ?? '', 'utf8');
+  // TODO: Add Private key
+  private static privateKey = 'privateKey';
 
   /**
    * Encrypt data and return jwt token
@@ -19,7 +20,7 @@ export default class JwtUtil {
    */
   public static create(payload: { user_id: string }) {
     try {
-      const exp = envVars.jwt.jwtExpireIn || '1h';
+      const exp = '1h';
       const signOptions: jwt.SignOptions = {
         algorithm: JwtUtil.algorithmName,
         expiresIn: exp,

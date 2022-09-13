@@ -1,5 +1,5 @@
 import logger, { JetLogger } from 'jet-logger';
-import type { Formats, LoggerModes } from 'jet-logger';
+import type { LoggerModes } from 'jet-logger';
 import { envVars } from '@/config';
 
 class Logger {
@@ -7,8 +7,8 @@ class Logger {
     JetLogger(
       envVars.logger.JET_LOGGER_MODE as LoggerModes,
       envVars.logger.JET_LOGGER_FILEPATH,
-      envVars.logger.JET_LOGGER_TIMESTAMP,
-      envVars.logger.JET_LOGGER_FORMAT as Formats
+      envVars.logger.JET_LOGGER_TIMESTAMP
+      // envVars.logger.JET_LOGGER_FORMAT as Formats,
     );
   }
 

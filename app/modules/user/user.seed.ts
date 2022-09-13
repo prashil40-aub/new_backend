@@ -1,6 +1,6 @@
-import { User } from '@/models';
+// import { User } from '@/models';
 
-export default async () => {
+export default () => {
   /*
   const user = new User();
 
@@ -20,7 +20,7 @@ export default async () => {
     mobile: '1234567890',
   };
 
-  const user = User.build(userObj);
-  await user.save();
-  return user;
+  // const user = User.build(userObj);
+  // await user.save();
+  return userObj;
 };

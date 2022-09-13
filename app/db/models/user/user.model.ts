@@ -1,7 +1,7 @@
-import { Model } from 'sequelize';
-import { IUser } from './user.interface';
+// import { Model } from 'sequelize';
+// import { IUser } from './user.interface';
 
-export class User extends Model<IUser> {
+export class User {
   declare id: number; // Note that the `null assertion` `!` is required in strict mode.
 
   declare firstName?: string | null;

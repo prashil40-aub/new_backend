@@ -1,17 +1,20 @@
 import type { Request, Response } from 'express';
 import { logger } from '@/libs';
 import { ApiErrors, ApiResponse } from '@/response_builder';
-import userService from './user.service';
+// import userService from './user.service';
 
 class UserController {
   /**
    ** GET /getOne/:id
    ** Get a user by ID.
    */
-  public static async getUserById(req: Request, res: Response) {
+  public static getUserById(req: Request, res: Response) {
     try {
       const userId = req.params.id;
-      const userRes = await userService.getUserById(userId);
+      const userRes = {
+        userId,
+        error: null,
+      };
       if (userRes.error) {
         ApiErrors.sendError(res, userRes.error);
         return;
@@ -33,9 +36,11 @@ class UserController {
    ** GET /getAllUsers
    ** Get all users.
    */
-  public static async getAllUsers(_req: Request, res: Response) {
+  public static getAllUsers(_req: Request, res: Response) {
     try {
-      const userRes = await userService.getAllUsers();
+      const userRes = {
+        error: null,
+      };
       if (userRes.error) {
         ApiErrors.sendError(res, userRes.error);
         return;
