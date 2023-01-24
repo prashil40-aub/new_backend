@@ -1,4 +1,5 @@
-import { Model } from 'mongoose';
+import { FilterQuery, Model, ProjectionType, QueryOptions } from 'mongoose';
+import { logger } from '@/libs';
 
 export class Query {
   // * Save
@@ -28,4 +29,20 @@ export class Query {
     //   return err;
     // }
   };
+
+  // * GET ALL query
+  public static find = async <T = unknown>(
+    ParsedModel: Model<T>,
+    criteria: FilterQuery<T>,
+    projection: ProjectionType<T>,
+    options: QueryOptions<T>
+  ): Promise<T[] | null> =>
+    new Promise((resolve, reject) => {
+      ParsedModel.find(criteria, projection, options)
+        .then((res) => {
+          logger.info('data', res);
+          resolve(res);
+        })
+        .catch(reject);
+    });
 }

@@ -14,3 +14,4 @@ export default {
 export * from './user';
 export * from './admin';
 export * from './zone';
+export * from './powerPlant';

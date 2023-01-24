@@ -35,6 +35,8 @@ type IEnv = {
   // DB_PASSWORD: string;
   // DB_HOST: string;
   DB_URL: string;
+  PROD_DB_IP: string;
+  PROD_DB_PORT: number;
   // SMTP_PORT: number;
   // SMTP_HOST: string;
   // SMTP_USERNAME: string;
@@ -62,6 +64,8 @@ const envVarsSchema = Joi.object<IEnv>()
     // DB_HOST: Joi.string().description('Host to connect to the Database').required(),
 
     DB_URL: Joi.string().description('URL to connect'),
+    PROD_DB_IP: Joi.string().description('URL to Prod clone DB'),
+    PROD_DB_PORT: Joi.number(),
     // SMTP_HOST: Joi.string().description('server that will send the emails'),
     // SMTP_PORT: Joi.number().description('port to connect to the email server'),
     // SMTP_USERNAME: Joi.string().description('username for email server'),
@@ -91,6 +95,8 @@ const envVars = {
     // dialect: value.DB_DIALECT,
     // password: value.DB_PASSWORD,
     url: value.DB_URL,
+    cloneIP: value.PROD_DB_IP,
+    clonePORT: value.PROD_DB_PORT,
   },
   jwt: {
     jwtExpireIn: value.JWT_EXPIRES_IN,

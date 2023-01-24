@@ -1,2 +1,2 @@
-export { default as DB } from './database';
+export { DB, prodCloneDB } from './db.primary';
 export * from './models';
