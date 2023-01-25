@@ -7,6 +7,7 @@ interface IDeviceMac {
   inverters?: Array<object> | null;
   useForEnergyCalculation?: string | null;
   isDeleted?: boolean | null;
+  powerPlantId: string | null;
 }
 
 export type { IDeviceMac };

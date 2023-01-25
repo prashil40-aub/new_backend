@@ -30,6 +30,17 @@ export class Query {
     // }
   };
 
+  public static bulkSave = async <T = unknown>(ParsedModel: Model<T>, data: []): Promise<T> => {
+    return new Promise((resolve, reject) => {
+      ParsedModel.insertMany(data)
+        .then((res: any) => {
+          logger.info('# Save: ', res);
+          resolve(res);
+        })
+        .catch(reject);
+    });
+  };
+
   // * GET ALL query
   public static find = async <T = unknown>(
     ParsedModel: Model<T>,
@@ -45,4 +56,18 @@ export class Query {
         })
         .catch(reject);
     });
+
+  public static permanentDelete = async <T = unknown>(
+    ParsedModel: Model<T>,
+    criteria: FilterQuery<T>
+  ): Promise<any> => {
+    return new Promise((resolve, reject) => {
+      ParsedModel.deleteMany(criteria)
+        .then((res) => {
+          logger.info('data', res);
+          resolve(res);
+        })
+        .catch(reject);
+    });
+  };
 }

@@ -1,6 +1,7 @@
-/* eslint-disable @typescript-eslint/no-unsafe-call */
+// /* eslint-disable @typescript-eslint/no-unsafe-call */
 import { Document, Schema } from 'mongoose';
 // import { DB } from 'app/db/database';
+// eslint-disable-next-line import/no-cycle
 import { DB } from '@/db';
 import { IPowerplant } from './powerplant.interface';
 
@@ -30,6 +31,10 @@ const powerPlantSchema: Schema = new Schema<IPowerplant>(
     plantCapacity: {
       type: Number,
       default: null,
+    },
+    isDeleted: {
+      type: Boolean,
+      default: false,
     },
   },
   {
