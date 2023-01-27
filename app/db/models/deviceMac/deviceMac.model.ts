@@ -13,6 +13,9 @@ const deviceMacSchema: Schema = new Schema<IDeviceMac>({
     default: null,
     sparse: true,
   },
+  powerPlantId: {
+    type: Schema.Types.ObjectId,
+  },
   deviceName: { type: String, trim: true, index: true, default: null },
   meters: { type: Array<object>, default: [] },
   inverters: { type: Array<object>, default: [] },

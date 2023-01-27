@@ -1,5 +1,5 @@
 import { FilterQuery, Model, ProjectionType, QueryOptions } from 'mongoose';
-import { logger } from '@/libs';
+// import { logger } from '@/libs';
 
 export class Query {
   // * Save
@@ -31,18 +31,21 @@ export class Query {
   };
 
   // * GET ALL query
-  public static find = async <T = unknown>(
+  public static find = <T = unknown>(
     ParsedModel: Model<T>,
     criteria: FilterQuery<T>,
     projection: ProjectionType<T>,
     options: QueryOptions<T>
-  ): Promise<T[] | null> =>
-    new Promise((resolve, reject) => {
+  ): Promise<T[] | null> => {
+    return new Promise((resolve, reject) => {
+      // logger.info('criteria', JSON.stringify(criteria, null, 2));
+      // logger.info('criteria', criteria.macAddress);
       ParsedModel.find(criteria, projection, options)
         .then((res) => {
-          logger.info('data', res);
+          // logger.info('data', res);
           resolve(res);
         })
         .catch(reject);
     });
+  };
 }

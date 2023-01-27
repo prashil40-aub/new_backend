@@ -1,3 +1,6 @@
+/* eslint-disable array-callback-return */
+/* eslint-disable guard-for-in */
+/* eslint-disable no-plusplus */
 import moment from 'moment';
 import { IResultAndError } from '@/interfaces';
 import { logger } from '@/libs';
@@ -16,6 +19,7 @@ class BillingService {
       data.startDate = new Date(data.startDate);
 
       data.fromSt = moment(data.startDate).startOf('day').add(5, 'hours').add(30, 'minutes');
+      // logger.info('start Date-->', moment(data.startDate));
       data.fromSt = moment(data.fromSt).format('x');
 
       data.fromEnd = moment(data.startDate).endOf('day').add(5, 'hours').add(30, 'minutes');
@@ -25,46 +29,62 @@ class BillingService {
       data.endDate = new Date(data.endDate);
 
       data.toSt = moment(data.endDate).startOf('day').add(5, 'hours').add(30, 'minutes');
+      // logger.info('end Date-->', moment(data.endDate));
       data.toSt = moment(data.toSt).format('x');
 
       data.toEnd = moment(data.endDate).endOf('day').add(5, 'hours').add(30, 'minutes');
       data.toEnd = moment(data.toEnd).format('x');
+      // logger.info('end Date data after -->', JSON.stringify(data));
 
-      // const plantDeviceMacs: Array<any> = [];
-      // logger.info('plant data', plantDetails);
+      await Promise.all(
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+        plantDetails.map(async (plant: any) => {
+          const devices: any = await DeviceMacService.getDeviceMac(plant);
+          plant.deviceMac = devices.result;
+        })
+      );
 
-      // const plantDevices = await plantDetails.map(this.getDeviceMacs);
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-      const plantDevices = await plantDetails.map(async (plant: any) => {
-        // logger.info('plant ->', plant.plantName);
-        const deviceMacs = await DeviceMacService.getDeviceMac(plant);
-        // logger.info('deviceMacs ->', deviceMacs.result);
-        return deviceMacs;
-      });
+      await Promise.all(
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+        plantDetails.map(async (plant) => {
+          plant.meters = [];
+          await DeviceMacService.getRawData(plant, data);
+        })
+      );
 
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-      // plantDetails.forEach(async (plant: any) => {
-      //   plant.meters = [];
+      const compare = (a, b) => {
+        return a.serial - b.serial;
+      };
 
-      //   const deviceMacs = await DeviceMacService.getDeviceMac(plant);
-      //   plantDeviceMacs.push(deviceMacs);
+      await Promise.all(
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+        plantDetails.map((plant) => {
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+          plant.meters.sort(compare);
+          // logger.info('meters-->', JSON.stringify(plant.meters, null, 2));
+          delete plant.deviceMac;
+        })
+      );
 
-      // logger.info('device data', plantDevices);
-      // });
+      let positionCount = 1;
 
-      // if (plantDeviceMacs.length === 0) {
-      //   logger.info('==> 2:: No deviceMacs found');
-      //   return {
-      //     result: null,
-      //     error: ApiErrors.newNotFoundError('No deviceMacs found'),
-      //   };
-      // }
+      await Promise.all(
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+        plantDetails.map(async (plant) => {
+          await Promise.all(
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+            plant.meters.map((meter) => {
+              meter.position = positionCount;
+              positionCount++;
+            })
+          );
+        })
+      );
 
       return {
-        result: plantDevices,
+        result: plantDetails,
         error: null,
       };
-      // return { result: data, error: null };
     } catch (error) {
       logger.err(
         '# Error while fetching plant billing Details BillingService.getPlantsBillingDetails()',
@@ -73,14 +93,6 @@ class BillingService {
       const er = ApiErrors.newInternalServerError('Something went wrong');
       return { result: null, error: er };
     }
-  };
-
-  public static getDeviceMacs = async (plant: any) => {
-    logger.info('plant ->', plant.plantName);
-
-    const deviceMacs = await DeviceMacService.getDeviceMac(plant);
-
-    return deviceMacs;
   };
 }
 

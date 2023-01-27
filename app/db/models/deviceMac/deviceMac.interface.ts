@@ -1,3 +1,5 @@
+import { Schema } from 'mongoose';
+
 interface IDeviceMac {
   deviceId?: number | null;
   serial?: number | null;
@@ -7,6 +9,7 @@ interface IDeviceMac {
   inverters?: Array<object> | null;
   useForEnergyCalculation?: string | null;
   isDeleted?: boolean | null;
+  powerPlantId: Schema.Types.ObjectId;
 }
 
 export type { IDeviceMac };
