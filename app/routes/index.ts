@@ -2,6 +2,7 @@ import { Router } from 'express';
 import type { IRoutes } from '@/interfaces';
 import { AuthRouter } from '@/modules/auth';
 import { BillingRouter } from '@/modules/billing';
+import { DbSyncUpRouter } from '@/modules/dbSyncUp';
 import { PowerPlantRouter } from '@/modules/powerPlant';
 import { UserRouter } from '@/modules/user';
 import { ZoneRouter } from '@/modules/zone';
@@ -15,6 +16,8 @@ class RootRouter {
     const { router: powerPlantRouter, apiPrefix: powerPlantPrefix } =
       PowerPlantRouter.createRoutes(router);
     const { router: billingRouter, apiPrefix: billingPrefix } = BillingRouter.createRoutes(router);
+    const { router: dbSyncUpRouter, apiPrefix: dbSyncUpPrefix } =
+      DbSyncUpRouter.createRoutes(router);
 
     // * Accumulate All Routes of Application
     const allRoutes: IRoutes[] = [
@@ -37,6 +40,10 @@ class RootRouter {
       {
         path: billingPrefix,
         route: billingRouter,
+      },
+      {
+        path: dbSyncUpPrefix,
+        route: dbSyncUpRouter,
       },
     ];
 

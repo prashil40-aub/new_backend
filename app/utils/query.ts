@@ -1,5 +1,5 @@
 import { FilterQuery, Model, ProjectionType, QueryOptions } from 'mongoose';
-// import { logger } from '@/libs';
+import { logger } from '@/libs';
 
 export class Query {
   // * Save
@@ -30,6 +30,17 @@ export class Query {
     // }
   };
 
+  public static bulkSave = async <T = unknown>(ParsedModel: Model<T>, data: []): Promise<T> => {
+    return new Promise((resolve, reject) => {
+      ParsedModel.insertMany(data)
+        .then((res: any) => {
+          logger.info('# Save: ', res);
+          resolve(res);
+        })
+        .catch(reject);
+    });
+  };
+
   // * GET ALL query
   public static find = <T = unknown>(
     ParsedModel: Model<T>,
@@ -41,6 +52,20 @@ export class Query {
       // logger.info('criteria', JSON.stringify(criteria, null, 2));
       // logger.info('criteria', criteria.macAddress);
       ParsedModel.find(criteria, projection, options)
+        .then((res) => {
+          // logger.info('data', res);
+          resolve(res);
+        })
+        .catch(reject);
+    });
+  };
+
+  public static permanentDelete = <T = unknown>(
+    ParsedModel: Model<T>,
+    criteria: FilterQuery<T>
+  ): Promise<any> => {
+    return new Promise((resolve, reject) => {
+      ParsedModel.deleteMany(criteria)
         .then((res) => {
           // logger.info('data', res);
           resolve(res);

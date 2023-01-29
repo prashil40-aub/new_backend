@@ -45,8 +45,9 @@ const DB = makeNewConnection(`${envVars.db.url}`);
 const prodCloneDB = makeNewConnection(
   `mongodb://${envVars.db.cloneIP}:${envVars.db.clonePORT}/solarPowerEnergy`
 );
+const productionDB = makeNewConnection(`${envVars.db.PRODUCTION_MONGO_URL}`);
 
-export { DB, prodCloneDB };
+export { DB, prodCloneDB, productionDB };
 
 // module.exports = {
 //   DB,

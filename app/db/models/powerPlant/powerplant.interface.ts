@@ -4,6 +4,7 @@ interface IPowerplant {
   district?: string | null;
   city?: string | null;
   plantCapacity?: number | null;
+  isDeleted?: boolean | false;
 }
 
 export type { IPowerplant };

@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { logger } from '@/libs';
 import { ApiErrors, ApiResponse, successMessage } from '@/response_builder';
-import { IPowerPlantModel } from 'app/db/models/powerPlant/powerplant.model';
+import { IPowerPlantModel } from 'app/db/models/powerPlant/powerplants';
 import PowerPlantService from '../powerPlant/powerplant.service';
 import BillingService from './billing.service';
 

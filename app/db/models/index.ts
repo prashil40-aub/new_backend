@@ -14,4 +14,5 @@ export default {
 export * from './user';
 export * from './admin';
 export * from './zone';
+// eslint-disable-next-line import/no-cycle
 export * from './powerPlant';

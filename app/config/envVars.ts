@@ -46,6 +46,7 @@ type IEnv = {
   JET_LOGGER_MODE: string;
   JET_LOGGER_FILEPATH: string;
   JET_LOGGER_FORMAT: string;
+  PRODUCTION_MONGO_URL: string;
 };
 
 const envVarsSchema = Joi.object<IEnv>()
@@ -66,6 +67,7 @@ const envVarsSchema = Joi.object<IEnv>()
     DB_URL: Joi.string().description('URL to connect'),
     PROD_DB_IP: Joi.string().description('URL to Prod clone DB'),
     PROD_DB_PORT: Joi.number(),
+    PRODUCTION_MONGO_URL: Joi.string().description('Production Atlas db'),
     // SMTP_HOST: Joi.string().description('server that will send the emails'),
     // SMTP_PORT: Joi.number().description('port to connect to the email server'),
     // SMTP_USERNAME: Joi.string().description('username for email server'),
@@ -97,6 +99,7 @@ const envVars = {
     url: value.DB_URL,
     cloneIP: value.PROD_DB_IP,
     clonePORT: value.PROD_DB_PORT,
+    PRODUCTION_MONGO_URL: value.PRODUCTION_MONGO_URL,
   },
   jwt: {
     jwtExpireIn: value.JWT_EXPIRES_IN,
