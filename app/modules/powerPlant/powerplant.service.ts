@@ -1,9 +1,9 @@
 // import moment from 'moment';
 import { IResultAndError } from '@/interfaces';
 import { logger } from '@/libs';
+import { IPowerplant, PowerPlant } from '@/models';
 import { ApiErrors } from '@/response_builder';
 import { Query } from 'app/utils/query';
-import { IPowerplant, Powerplant } from '../../db/models/powerPlant';
 
 class PowerPlantService {
   // * Get Power Plant Details
@@ -37,7 +37,7 @@ class PowerPlantService {
       };
       // * query helper
       // TODO: make getOne query in query helper and replave here.
-      const powerPlant = await Query.find(Powerplant, criteria, projection, options);
+      const powerPlant = await Query.find(PowerPlant, criteria, projection, options);
 
       // * Check if Power plant Details fetched successfully
       if (!powerPlant) {

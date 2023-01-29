@@ -1,4 +1,5 @@
-import { Document, model, Schema } from 'mongoose';
+import { Document, Schema } from 'mongoose';
+import { productionDB } from '@/db';
 import { IZone } from './zone.interface';
 
 const zoneSchema: Schema = new Schema<IZone>(
@@ -20,5 +21,5 @@ const zoneSchema: Schema = new Schema<IZone>(
 
 export interface IZoneModel extends IZone, Document {}
 
-const Zone = model<IZoneModel>(`Zone`, zoneSchema);
+const Zone = productionDB.model<IZoneModel>(`Zone`, zoneSchema);
 export default Zone;

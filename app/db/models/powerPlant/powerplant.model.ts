@@ -1,8 +1,9 @@
+/* eslint-disable @typescript-eslint/no-unsafe-call */
 // /* eslint-disable @typescript-eslint/no-unsafe-call */
 import { Document, Schema } from 'mongoose';
 // import { DB } from 'app/db/database';
 // eslint-disable-next-line import/no-cycle
-import { DB } from '@/db';
+import { DB, productionDB } from '@/db';
 import { IPowerplant } from './powerplant.interface';
 
 const powerPlantSchema: Schema = new Schema<IPowerplant>(
@@ -45,4 +46,7 @@ const powerPlantSchema: Schema = new Schema<IPowerplant>(
 export interface IPowerPlantModel extends IPowerplant, Document {}
 
 const PowerPlant = DB.model<IPowerPlantModel>(`PowerPlant`, powerPlantSchema);
-export default PowerPlant;
+const ProdPowerPlant = productionDB.model<IPowerPlantModel>(`PowerPlant`, powerPlantSchema);
+// export default PowerPlant;
+// export { ProdPowerPlant };
+export { ProdPowerPlant, PowerPlant };

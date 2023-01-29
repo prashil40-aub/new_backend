@@ -1,4 +1,11 @@
-import { FilterQuery, Model, ProjectionType, QueryOptions } from 'mongoose';
+import {
+  FilterQuery,
+  Model,
+  ProjectionType,
+  QueryOptions,
+  UpdateQuery,
+  UpdateWriteOpResult,
+} from 'mongoose';
 import { logger } from '@/libs';
 
 export class Query {
@@ -51,6 +58,7 @@ export class Query {
     return new Promise((resolve, reject) => {
       // logger.info('criteria', JSON.stringify(criteria, null, 2));
       // logger.info('criteria', criteria.macAddress);
+      logger.info('ParsedModel===>', JSON.stringify(ParsedModel, null, 2));
       ParsedModel.find(criteria, projection, options)
         .then((res) => {
           // logger.info('data', res);
@@ -68,6 +76,23 @@ export class Query {
       ParsedModel.deleteMany(criteria)
         .then((res) => {
           // logger.info('data', res);
+          resolve(res);
+        })
+        .catch(reject);
+    });
+  };
+
+  // * Add or Update single record
+  public static updateOne = async <T = unknown>(
+    ParsedModel: Model<T>,
+    criteria: FilterQuery<T>,
+    dataToSet: UpdateQuery<T>,
+    options: QueryOptions<T>
+  ): Promise<UpdateWriteOpResult> => {
+    return new Promise((resolve, reject) => {
+      ParsedModel.updateOne(criteria, dataToSet, options)
+        .then((res: UpdateWriteOpResult) => {
+          logger.info('res===>', JSON.stringify(res, null, 2));
           resolve(res);
         })
         .catch(reject);

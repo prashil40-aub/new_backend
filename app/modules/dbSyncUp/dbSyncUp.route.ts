@@ -1,6 +1,8 @@
 import { Router } from 'express';
 import { IApiRoute } from '@/interfaces';
+import { validate } from '@/middleware';
 import DbSyncUpController from './dbSyncUp.controller';
+import dbSyncUpValidation from './dbSyncUp.validation';
 
 const DBSYNCUP_ROUTE_PREFIX = '/dbsyncup';
 
@@ -8,7 +10,9 @@ class DbSyncUpRouter {
   private static PREFIX = DBSYNCUP_ROUTE_PREFIX;
 
   public static createRoutes = (apiRouter: Router): IApiRoute => {
-    apiRouter.route('/').post(DbSyncUpController.updateDb);
+    apiRouter
+      .route('/')
+      .post(validate(dbSyncUpValidation.dbSyncUpUpdate), DbSyncUpController.updateDb);
 
     return { router: apiRouter, apiPrefix: this.PREFIX };
   };
