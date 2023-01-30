@@ -24,4 +24,8 @@ export const successMessage = {
   powerPlant: {
     PLANT_DETAILS_FOUND: 'Plants Detail fetched successfully',
   },
+
+  dbSyncUp: {
+    SYNC_UP_SUCCESS: 'Data synced up successfully',
+  },
 };

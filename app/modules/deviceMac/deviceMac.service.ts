@@ -4,8 +4,8 @@ import _ from 'lodash';
 import { IPowerplant } from '@/db';
 import { IResultAndError } from '@/interfaces';
 import { logger } from '@/libs';
+import { DeviceMac } from '@/models';
 import { ApiErrors } from '@/response_builder';
-import DeviceMac from 'app/db/models/deviceMac/deviceMac.model';
 import { Raw } from 'app/db/models/raw';
 import { Query } from 'app/utils/query';
 

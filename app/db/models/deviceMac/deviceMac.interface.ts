@@ -12,4 +12,8 @@ interface IDeviceMac {
   powerPlantId: Schema.Types.ObjectId;
 }
 
-export type { IDeviceMac };
+interface IDeviceMacData extends IDeviceMac {
+  _id?: string | null;
+}
+
+export type { IDeviceMac, IDeviceMacData };

@@ -2,13 +2,13 @@
 import Joi from 'joi';
 
 class DBSyncUpValidation {
-  dbSyncUpUpdate: { params: Joi.ObjectSchema };
+  dbSyncUpUpdate: { body: Joi.ObjectSchema };
 
   constructor() {
     this.dbSyncUpUpdate = {
-      params: Joi.object().keys({
+      body: Joi.object().keys({
         ids: Joi.array().items(Joi.string().required()),
-        type: Joi.string(),
+        type: Joi.string().required(),
       }),
     };
   }

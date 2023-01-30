@@ -1,16 +1,20 @@
 import { Request, Response } from 'express';
 import { logger } from '@/libs';
+import { ApiErrors, ApiResponse, successMessage } from '@/response_builder';
 import DbSyncUpService from './dbSyncUp.service';
 
 export default class DbSyncUpController {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   public static async updateDb(_req: Request, res: Response) {
-    // eslint-disable-next-line no-console
-    // logger.info('Body ====> ', _req.body);
-    logger.info(' _req.body===>', JSON.stringify(_req.body, null, 2));
+    const payload: { ids: Array<string>; type: string } = _req.body;
+    logger.info('# Api payload data', JSON.stringify(payload, null, 2));
+
     // * Get plant/device data from Atlas DB
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-    const productionData: any = await DbSyncUpService.getProuctionData(_req.body);
+    const productionData: any = await DbSyncUpService.getProuctionData(payload);
+
+    if (productionData.error) {
+      ApiErrors.sendError(res, productionData.error);
+      return;
+    }
 
     // * Update retrived plant/device data to Isolated DB
     const updatedIsolatedDBData: any = await DbSyncUpService.updateIsolatedDB(
@@ -18,9 +22,13 @@ export default class DbSyncUpController {
       productionData.result
     );
 
-    // const updateDbResp: any = await DbSyncUpService.updateDB(_req.body);
+    const response = ApiResponse.newResponse({
+      data: updatedIsolatedDBData,
+      message: successMessage.dbSyncUp.SYNC_UP_SUCCESS,
+      status: 200,
+    });
 
-    logger.info('updating db');
-    res.json(updatedIsolatedDBData);
+    res.status(response.status);
+    res.json(response);
   }
 }

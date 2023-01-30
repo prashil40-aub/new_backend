@@ -1,5 +1,5 @@
 import { Document, Schema } from 'mongoose';
-import { DB } from '@/db';
+import { DB, productionDB } from '@/db';
 import { IDeviceMac } from './deviceMac.interface';
 
 const deviceMacSchema: Schema = new Schema<IDeviceMac>({
@@ -30,4 +30,5 @@ const deviceMacSchema: Schema = new Schema<IDeviceMac>({
 export interface IDeviceMacModel extends IDeviceMac, Document {}
 
 const DeviceMac = DB.model<IDeviceMacModel>('DeviceMac', deviceMacSchema);
-export default DeviceMac;
+const ProdDeviceMac = productionDB.model<IDeviceMacModel>('DeviceMac', deviceMacSchema);
+export { DeviceMac, ProdDeviceMac };

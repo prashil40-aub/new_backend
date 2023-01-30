@@ -56,9 +56,6 @@ export class Query {
     options: QueryOptions<T>
   ): Promise<T[] | null> => {
     return new Promise((resolve, reject) => {
-      // logger.info('criteria', JSON.stringify(criteria, null, 2));
-      // logger.info('criteria', criteria.macAddress);
-      logger.info('ParsedModel===>', JSON.stringify(ParsedModel, null, 2));
       ParsedModel.find(criteria, projection, options)
         .then((res) => {
           // logger.info('data', res);
@@ -92,7 +89,7 @@ export class Query {
     return new Promise((resolve, reject) => {
       ParsedModel.updateOne(criteria, dataToSet, options)
         .then((res: UpdateWriteOpResult) => {
-          logger.info('res===>', JSON.stringify(res, null, 2));
+          // logger.info('res===>', JSON.stringify(res, null, 2));
           resolve(res);
         })
         .catch(reject);
