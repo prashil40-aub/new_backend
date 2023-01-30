@@ -14,7 +14,7 @@ class DeviceMacService {
     data: IPowerplant | any
   ): Promise<IResultAndError<Array<object> | any | null>> => {
     try {
-      // logger.info('details->', data._id);
+      logger.info('2:: fetching DeviceMac details');
 
       const criteria: any = {
         // powerPlantId: new mongoose.Types.ObjectId(data._id),
@@ -52,7 +52,7 @@ class DeviceMacService {
 
       // logger.info('deviceMacs found', deviceMac[0].macAddress);
 
-      logger.info('==> 2 :: deviceMacs fetched successfully!!');
+      // logger.info('==> 2 :: deviceMacs fetched successfully!!');
       return {
         result: deviceMac,
         error: null,
@@ -98,6 +98,7 @@ class DeviceMacService {
     serialCount: number
   ): Promise<IResultAndError<any | null>> => {
     try {
+      logger.info('3:: fetching device Raw data');
       const fromDateCriteria = {
         mac: device.macAddress,
         timestamp: {
