@@ -76,7 +76,14 @@ class DeviceMacService {
         plantData.deviceMac.map(async (device) => {
           const serial = serialCount++;
           // logger.info('macAddress->', device.macAddress);
-          await this.getDeviceRawData(device, plantData, payloadData, serial);
+          const response = await this.getDeviceRawData(device, plantData, payloadData, serial);
+          if (response.error) {
+            return {
+              result: null,
+              error: response.error,
+            };
+          }
+          return response;
         })
       );
 
@@ -206,6 +213,11 @@ class DeviceMacService {
           }
         }
         // logger.info('planData-->', JSON.stringify(plantData));
+      } else {
+        return {
+          result: null,
+          error: ApiErrors.newNotFoundError(`Raw data not found for ${device.macAddress}`),
+        };
       }
       return {
         result: 'success',

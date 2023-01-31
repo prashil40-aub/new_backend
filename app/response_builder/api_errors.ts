@@ -1,5 +1,6 @@
 import type { Response } from 'express';
 import HttpStatusCodes from 'http-status-codes';
+import { WithRequired } from 'app/types';
 
 enum apiErrorTypes {
   INTERNAL_SERVER_ERROR = 'INTERNAL_SERVER_ERROR',
@@ -16,6 +17,13 @@ export interface IApiError {
   success: boolean;
 }
 
+export interface IApiBillingError<T = unknown> {
+  data?: T;
+  message?: string;
+  statusCode?: number;
+  error?: IApiError;
+  responseType?: string;
+}
 export default class ApiErrors extends Error {
   /**
    ** Throws new InternalServerError
@@ -95,6 +103,19 @@ export default class ApiErrors extends Error {
   public static sendError(res: Response, error: IApiError) {
     res.status(error.status);
     res.json(error);
+    return res;
+  }
+
+  public static billingApiErrorResponse(res: Response, error: IApiError) {
+    const r: WithRequired<IApiBillingError, 'statusCode'> = {
+      statusCode: error.status,
+      error,
+      message: error.message,
+      responseType: error.type,
+    };
+
+    res.status(r.statusCode);
+    res.json(r);
     return res;
   }
 }

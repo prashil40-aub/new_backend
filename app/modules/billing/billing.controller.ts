@@ -13,8 +13,7 @@ class BillingController {
 
       const plantDetails = await PowerPlantService.getPlantDetails(plantData);
       if (plantDetails.error) {
-        ApiErrors.sendError(res, plantDetails.error);
-        return;
+        ApiErrors.billingApiErrorResponse(res, plantDetails.error);
       }
       // logger.info('plantDetails==>', plantDetails.result[0].plantName);
 
@@ -23,13 +22,17 @@ class BillingController {
         plantDetails.result
       );
 
-      const response = ApiResponse.newResponse({
+      if (plantsBillingData.error) {
+        ApiErrors.billingApiErrorResponse(res, plantsBillingData.error);
+      }
+
+      const response = ApiResponse.billingApiResponse({
         data: plantsBillingData,
         message: successMessage.powerPlant.PLANT_DETAILS_FOUND,
         status: 200,
       });
 
-      res.status(response.status);
+      res.status(response.statusCode);
       res.json(response);
     } catch (error) {
       logger.err(
@@ -37,7 +40,7 @@ class BillingController {
         error
       );
       const er = ApiErrors.newInternalServerError('Something went wrong');
-      ApiErrors.sendError(res, er);
+      ApiErrors.billingApiErrorResponse(res, er);
     }
   }
 }

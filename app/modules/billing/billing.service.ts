@@ -39,8 +39,16 @@ class BillingService {
       await Promise.all(
         // eslint-disable-next-line @typescript-eslint/no-unsafe-call
         plantDetails.map(async (plant: any) => {
-          const devices: any = await DeviceMacService.getDeviceMac(plant);
+          const devices = await DeviceMacService.getDeviceMac(plant);
+          if (devices.error) {
+            return {
+              result: null,
+              error: devices.error,
+            };
+          }
+
           plant.deviceMac = devices.result;
+          return devices;
         })
       );
 
@@ -48,7 +56,14 @@ class BillingService {
         // eslint-disable-next-line @typescript-eslint/no-unsafe-call
         plantDetails.map(async (plant) => {
           plant.meters = [];
-          await DeviceMacService.getRawData(plant, data);
+          const response = await DeviceMacService.getRawData(plant, data);
+          if (response.error) {
+            return {
+              result: null,
+              error: response.error,
+            };
+          }
+          return response;
         })
       );
 
