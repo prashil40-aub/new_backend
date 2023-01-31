@@ -13,7 +13,9 @@ class BillingController {
 
       const plantDetails = await PowerPlantService.getPlantDetails(plantData);
       if (plantDetails.error) {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-call
         ApiErrors.billingApiErrorResponse(res, plantDetails.error);
+        return;
       }
       // logger.info('plantDetails==>', plantDetails.result[0].plantName);
 
@@ -23,9 +25,12 @@ class BillingController {
       );
 
       if (plantsBillingData.error) {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-call
         ApiErrors.billingApiErrorResponse(res, plantsBillingData.error);
+        return;
       }
 
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-call
       const response = ApiResponse.billingApiResponse({
         data: plantsBillingData,
         message: successMessage.powerPlant.PLANT_DETAILS_FOUND,

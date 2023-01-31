@@ -14,7 +14,7 @@ class PowerPlantController {
 
       const plantDetails: any = await PowerPlantService.getPlantDetails(plantData);
       if (plantDetails.error) {
-        ApiErrors.sendError(res, plantDetails.error);
+        ApiErrors.billingApiErrorResponse(res, plantDetails.error);
         return;
       }
       // logger.info('plantDetails==>>', plantDetails.result);
@@ -43,12 +43,13 @@ class PowerPlantController {
       //     return;
       //   }
 
-      const response = ApiResponse.newResponse({
+      const response = ApiResponse.billingApiResponse({
         data: plantDetails,
         message: successMessage.powerPlant.PLANT_DETAILS_FOUND,
+        status: 200,
       });
 
-      res.status(response.status);
+      res.status(response.statusCode);
       res.json(response);
     } catch (error) {
       logger.err(
@@ -56,7 +57,7 @@ class PowerPlantController {
         error
       );
       const er = ApiErrors.newInternalServerError('Something went wrong');
-      ApiErrors.sendError(res, er);
+      ApiErrors.billingApiErrorResponse(res, er);
     }
   }
 }

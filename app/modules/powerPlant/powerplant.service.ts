@@ -38,14 +38,14 @@ class PowerPlantService {
       };
       // * query helper
       // TODO: make getOne query in query helper and replave here.
-      const powerPlant = await Query.find(PowerPlant, criteria, projection, options);
+      const powerPlant: any = await Query.find(PowerPlant, criteria, projection, options);
 
       // * Check if Power plant Details fetched successfully
-      if (!powerPlant) {
+      if (!powerPlant.length) {
         logger.info('==> 2:: No Plants Found');
         return {
           result: null,
-          error: ApiErrors.newNotFoundError('No Plants Found'),
+          error: ApiErrors.newNotFoundError('No Plant Details Found'),
         };
       }
 

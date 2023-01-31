@@ -56,14 +56,16 @@ class BillingService {
         // eslint-disable-next-line @typescript-eslint/no-unsafe-call
         plantDetails.map(async (plant) => {
           plant.meters = [];
-          const response = await DeviceMacService.getRawData(plant, data);
-          if (response.error) {
-            return {
-              result: null,
-              error: response.error,
-            };
-          }
-          return response;
+          // TODO: Handle RAW DATA NOT FOUND condition.
+          // const response =
+          await DeviceMacService.getRawData(plant, data);
+          // if (response.error) {
+          //   return {
+          //     result: null,
+          //     error: response.error,
+          //   };
+          // }
+          // return response;
         })
       );
 

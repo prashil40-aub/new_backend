@@ -21,7 +21,7 @@ export interface IApiBillingError<T = unknown> {
   data?: T;
   message?: string;
   statusCode?: number;
-  error?: IApiError;
+  error?: IApiError | any;
   responseType?: string;
 }
 export default class ApiErrors extends Error {
@@ -109,7 +109,7 @@ export default class ApiErrors extends Error {
   public static billingApiErrorResponse(res: Response, error: IApiError) {
     const r: WithRequired<IApiBillingError, 'statusCode'> = {
       statusCode: error.status,
-      error,
+      error: 'Bad Request',
       message: error.message,
       responseType: error.type,
     };
