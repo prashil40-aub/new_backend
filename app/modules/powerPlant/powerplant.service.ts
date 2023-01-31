@@ -25,11 +25,12 @@ class PowerPlantService {
       }
 
       const projection = {
-        plantName: 1,
-        state: 1,
-        district: 1,
-        city: 1,
         plantCapacity: 1,
+        state: 1,
+        city: 1,
+        district: 1,
+        plantName: 1,
+        plantCode: 1,
       };
 
       const options = {

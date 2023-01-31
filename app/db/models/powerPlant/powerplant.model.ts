@@ -41,6 +41,10 @@ const powerPlantSchema: Schema = new Schema<IPowerplant>(
       type: Boolean,
       default: false,
     },
+    plantCode: {
+      type: String,
+      default: '',
+    },
   },
   {
     timestamps: true,
