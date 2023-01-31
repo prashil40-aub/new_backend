@@ -9,7 +9,7 @@ class BillingController {
   public static async getReadings(_req: Request, res: Response) {
     try {
       const plantData: IPowerPlantModel | any = _req.query;
-      logger.info('# Api query data', JSON.stringify(plantData));
+      // logger.info('# Api query data', JSON.stringify(plantData));
 
       const plantDetails = await PowerPlantService.getPlantDetails(plantData);
       if (plantDetails.error) {

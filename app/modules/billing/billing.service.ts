@@ -66,11 +66,10 @@ class BillingService {
         })
       );
 
-      let positionCount = 1;
-
       await Promise.all(
         // eslint-disable-next-line @typescript-eslint/no-unsafe-call
         plantDetails.map(async (plant) => {
+          let positionCount = 1;
           await Promise.all(
             // eslint-disable-next-line @typescript-eslint/no-unsafe-call
             plant.meters.map((meter) => {
