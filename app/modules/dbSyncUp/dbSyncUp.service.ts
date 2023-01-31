@@ -84,6 +84,7 @@ export default class DbSyncUpService {
           plantCapacity: 1,
           isDeleted: 1,
           isHide: 1,
+          plantCode: 1,
         };
 
         // * Get plants from production database with $in query
@@ -196,6 +197,7 @@ export default class DbSyncUpService {
         plantCapacity: 1,
         isDeleted: 1,
         isHide: 1,
+        plantCode: 1,
       };
 
       const deviceMacProjection = {
