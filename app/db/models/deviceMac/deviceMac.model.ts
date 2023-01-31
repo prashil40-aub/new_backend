@@ -8,8 +8,8 @@ const deviceMacSchema: Schema = new Schema<IDeviceMac>({
   macAddress: {
     type: String,
     trim: true,
-    unique: true,
-    index: true,
+    // unique: true,
+    // index: true,
     default: null,
     sparse: true,
   },

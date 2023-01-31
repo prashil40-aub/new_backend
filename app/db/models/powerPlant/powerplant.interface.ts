@@ -6,6 +6,7 @@ interface IPowerplant {
   city?: string | null;
   plantCapacity?: number | null;
   isDeleted?: boolean | false;
+  isHide?: boolean | false;
 }
 
 interface IPowerPlantData extends IPowerplant {

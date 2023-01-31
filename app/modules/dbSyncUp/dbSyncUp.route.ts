@@ -11,9 +11,9 @@ class DbSyncUpRouter {
 
   public static createRoutes = (apiRouter: Router): IApiRoute => {
     apiRouter
-      .route('/')
-      .post(validate(dbSyncUpValidation.dbSyncUpUpdate), DbSyncUpController.updateDb);
-
+      .route('/byId')
+      .post(validate(dbSyncUpValidation.dbSyncUpUpdate), DbSyncUpController.syncRecordsById);
+    apiRouter.route('/bulk').post(DbSyncUpController.bulkSyncUp);
     return { router: apiRouter, apiPrefix: this.PREFIX };
   };
 }

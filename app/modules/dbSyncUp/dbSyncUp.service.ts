@@ -1,5 +1,5 @@
 /* eslint-disable func-names */
-import { IDeviceMacData, IPowerPlantData } from '@/db';
+import { IDeviceMac, IDeviceMacData, IPowerPlantData } from '@/db';
 import { IResultAndError } from '@/interfaces';
 import { logger } from '@/libs';
 import { ProdDeviceMac, DeviceMac, PowerPlant, ProdPowerPlant } from '@/models';
@@ -58,7 +58,7 @@ export default class DbSyncUpService {
   //   });
   // };
 
-  public static getProuctionData = async (payload: {
+  public static getProuctionDataById = async (payload: {
     ids: Array<string>;
     type: string;
   }): Promise<IResultAndError<Array<IPowerPlantData | IDeviceMacData> | any | null>> => {
@@ -83,6 +83,7 @@ export default class DbSyncUpService {
           city: 1,
           plantCapacity: 1,
           isDeleted: 1,
+          isHide: 1,
         };
 
         // * Get plants from production database with $in query
@@ -166,6 +167,127 @@ export default class DbSyncUpService {
     } catch (error) {
       logger.err(
         '# Error while fetching Data from production DbSyncUpService.updateIsolatedDB()',
+        error
+      );
+      const er = ApiErrors.newInternalServerError('Something went wrong');
+      return { result: null, error: er };
+    }
+  };
+
+  public static getProductionData = async (): Promise<
+    IResultAndError<
+      { powerplants: Array<IPowerPlantData>; deviceMacs: Array<IDeviceMac> } | any | null
+    >
+  > => {
+    try {
+      const criteria = {
+        isDeleted: false,
+      };
+
+      const options = {
+        lean: true,
+      };
+
+      const powerplantProjection = {
+        plantName: 1,
+        state: 1,
+        district: 1,
+        city: 1,
+        plantCapacity: 1,
+        isDeleted: 1,
+        isHide: 1,
+      };
+
+      const deviceMacProjection = {
+        deviceId: 1,
+        serial: 1,
+        macAddress: 1,
+        powerPlantId: 1,
+        deviceName: 1,
+        meters: 1,
+        inverters: 1,
+        useForEnergyCalculation: 1,
+        isDeleted: 1,
+      };
+
+      const data: {
+        powerplants: Array<IPowerPlantData> | any;
+        deviceMacs: Array<IDeviceMac> | any;
+      } = {
+        powerplants: [],
+        deviceMacs: [],
+      };
+
+      data.powerplants = await Query.find(ProdPowerPlant, criteria, powerplantProjection, options);
+      if (!data.powerplants?.length) {
+        return {
+          result: null,
+          error: ApiErrors.newNotFoundError('No Powerplant found in Production DB'),
+        };
+      }
+
+      data.deviceMacs = await Query.find(ProdDeviceMac, criteria, deviceMacProjection, options);
+      if (!data.deviceMacs?.length) {
+        return {
+          result: null,
+          error: ApiErrors.newNotFoundError('No Device found in Production DB'),
+        };
+      }
+      logger.info('powerplants===>', JSON.stringify(data.powerplants.length, null, 2));
+      logger.info('deviceMacs===>', JSON.stringify(data.deviceMacs.length, null, 2));
+      return {
+        result: data,
+        error: null,
+      };
+    } catch (error) {
+      logger.err(
+        '# Error while fetching Data from production DbSyncUpService.getProductionData()',
+        error
+      );
+      const er = ApiErrors.newInternalServerError('Something went wrong');
+      return { result: null, error: er };
+    }
+  };
+
+  public static updateIsolatedDBInBulk = async (
+    productionData:
+      | {
+          powerplants: Array<IPowerPlantData>;
+          deviceMacs: Array<IDeviceMac>;
+        }
+      | any
+  ): Promise<IResultAndError<any>> => {
+    try {
+      // logger.info('Data===>', JSON.stringify(, null, 2));
+      logger.info('powerplants===>', JSON.stringify(productionData.powerplants.length, null, 2));
+      logger.info('deviceMacs===>', JSON.stringify(productionData.deviceMacs.length, null, 2));
+      let powerplantsCount = 0;
+      await Promise.all(
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+        productionData.powerplants.map(async (plant: IPowerPlantData) => {
+          const id = plant._id;
+          delete plant._id;
+          await Query.updateOne(PowerPlant, { _id: id }, plant, { upsert: true });
+          powerplantsCount += 1;
+        })
+      );
+      let deviceMacsCount = 0;
+      await Promise.all(
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+        productionData.deviceMacs.map(async (device: IDeviceMacData) => {
+          const id = device._id;
+          delete device._id;
+          await Query.updateOne(DeviceMac, { _id: id }, device, { upsert: true });
+          deviceMacsCount += 1;
+        })
+      );
+      return {
+        result: `Updated ${powerplantsCount} Powerplants & ${deviceMacsCount} Devices`,
+        error: null,
+      };
+    } catch (error) {
+      logger.err(
+        '# Error while updating bulk data in database DbSyncUpService.updateIsolatedDBInBulk()',
         error
       );
       const er = ApiErrors.newInternalServerError('Something went wrong');
