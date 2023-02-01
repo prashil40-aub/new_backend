@@ -2,12 +2,13 @@ import type { Response } from 'express';
 import HttpStatusCodes from 'http-status-codes';
 import { WithRequired } from 'app/types';
 
-enum apiErrorTypes {
+export enum apiErrorTypes {
   INTERNAL_SERVER_ERROR = 'INTERNAL_SERVER_ERROR',
   BAD_REQUEST = 'BAD_REQUEST',
   NOT_FOUND = 'NOT_FOUND',
   UNAUTHORIZED = 'UNAUTHORIZED',
   NOT_AUTHENTICATED = 'NOT_AUTHENTICATED',
+  INVALID_ID = 'INVALID_ID',
 }
 
 export interface IApiError {
