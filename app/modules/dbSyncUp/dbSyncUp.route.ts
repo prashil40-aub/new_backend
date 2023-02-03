@@ -13,7 +13,7 @@ class DbSyncUpRouter {
     apiRouter
       .route('/byId')
       .post(validate(dbSyncUpValidation.dbSyncUpUpdate), DbSyncUpController.syncRecordsById);
-    apiRouter.route('/bulk').post(DbSyncUpController.bulkSyncUp);
+    apiRouter.route('/bulk').get(DbSyncUpController.bulkSyncUp);
     return { router: apiRouter, apiPrefix: this.PREFIX };
   };
 }
