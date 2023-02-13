@@ -130,7 +130,7 @@ class DeviceMacService {
         let isInverter = 0;
         let idCount = 0;
         // eslint-disable-next-line eqeqeq
-        if (device.useForEnergyCalculation == 'Inverter') {
+        if (device.useForEnergyCalculation == 'inverter') {
           isInverter = 1;
         }
 
