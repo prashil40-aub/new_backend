@@ -126,7 +126,7 @@ class DeviceMacService {
 
       let result2: any = await Query.find(Raw, toDateCriteria, {}, { sort: { timestamp: -1 } });
 
-      if (result1 && result1.length && result2 && result2.length) {
+      if (result1 && result1.length) {
         let isInverter = 0;
         let idCount = 0;
         // eslint-disable-next-line eqeqeq
@@ -156,11 +156,15 @@ class DeviceMacService {
               const k1 = `${result1.mac}::${result1.inverters[i].id}`;
 
               finalObj2[k1] = {
-                start: _.has(result1.inverters[i], 'kwh_total')
-                  ? _.toNumber(result1.inverters[i].kwh_total)
+                start: result1
+                  ? _.has(result1.inverters[i], 'kwh_total')
+                    ? _.toNumber(result1.inverters[i].kwh_total)
+                    : 0
                   : 0,
-                end: _.has(result2.inverters[i], 'kwh_total')
-                  ? _.toNumber(result2.inverters[i].kwh_total)
+                end: result2
+                  ? _.has(result2.inverters[i], 'kwh_total')
+                    ? _.toNumber(result2.inverters[i].kwh_total)
+                    : 0
                   : 0,
                 id: result1.inverters[i].id,
               };
@@ -187,11 +191,15 @@ class DeviceMacService {
               const k1 = `${result1.mac}:: meter${result1.meters[i].id}`;
 
               finalObj2[k1] = {
-                start: _.has(result1.meters[i], 'meter_kwh_total')
-                  ? _.toNumber(result1.meters[i].meter_kwh_total)
+                start: result1
+                  ? _.has(result1.meters[i], 'meter_kwh_total')
+                    ? _.toNumber(result1.meters[i].meter_kwh_total)
+                    : 0
                   : 0,
-                end: _.has(result2.meters[i], 'meter_kwh_total')
-                  ? _.toNumber(result2.meters[i].meter_kwh_total)
+                end: result2
+                  ? _.has(result2.meters[i], 'meter_kwh_total')
+                    ? _.toNumber(result2.meters[i].meter_kwh_total)
+                    : 0
                   : 0,
                 id: result1.meters[i].id,
               };
