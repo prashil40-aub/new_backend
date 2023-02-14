@@ -3,7 +3,7 @@
     "baseUrl": "./",
     "typeRoots": ["./node_modules/@types", "./app/types"],
     "target": "ES2020",
-    "lib": ["es2015"],
+    "lib": ["es2015", "ES2022"],
     "outDir": "dist",
     "module": "commonjs",
     "strict": true,
@@ -16,12 +16,12 @@
     "allowJs": true,
 
     "moduleResolution": "node",
-    "noImplicitAny": true,
+    "noImplicitAny": false,
     "strictNullChecks": true,
     "noImplicitThis": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "noImplicitReturns": true,
+    "noImplicitReturns": false,
     "noFallthroughCasesInSwitch": true,
     "paths": {
       "@/config": ["./app/config/index"],

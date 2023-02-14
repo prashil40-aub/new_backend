@@ -1,22 +1,23 @@
 import compression from 'compression';
-import cookieParser from 'cookie-parser';
+// import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import type { Express, Router } from 'express';
 import express from 'express';
 import helmet from 'helmet';
+import mongoose from 'mongoose';
 import morgan from 'morgan';
 import { envVars, ENV_MODE, paths, ROUTE_PREFIX } from '@/config';
-import { DB } from '@/db';
+// import { DB, prodCloneDB } from '@/db';
 import { logger } from '@/libs';
 import { errorMiddleware } from '@/middleware';
-import * as Models from '@/models';
+// import * as Models from '@/models';
 import { ApiErrors, ApiResponse } from '@/response_builder';
 import RootRouter from '@/routes';
 
 class App {
   public app: Express;
 
-  public db: typeof DB;
+  public db: typeof mongoose;
 
   public allRoutes: Router;
 
@@ -24,7 +25,7 @@ class App {
 
   constructor() {
     this.app = express();
-    this.db = DB;
+    this.db = mongoose;
     this.allRoutes = RootRouter.createAllRoutes(this.router);
 
     this.initializeMiddleware();
@@ -48,12 +49,18 @@ class App {
   }
 
   // * setup Database Connection
-  public setUpDatabase() {
+  public static setUpDatabase() {
     try {
-      this.db.init();
-      Models.default.setupModelsRelation();
-      this.db.sync({ alter: false }).catch(logger.err);
-      this.db.connect().catch(logger.err);
+      // this.db.init();
+      // Models.default.setupModelsRelation();
+      // this.db.sync({ alter: false }).catch(logger.err);
+      // this.db.connect().catch(logger.err);
+      // this.db.connect()
+      // await this.db.connect(envVars.db.url).then((res) => {
+      //   logger.info('res', res);
+      // });
+      // DB();
+      // prodCloneDB();
     } catch (err) {
       logger.info('+-------------------------------------------------------------+');
       logger.err('# Error while setting up Database', err);
@@ -81,7 +88,7 @@ class App {
       this.app.use(express.json());
 
       // * add cookie in request
-      this.app.use(cookieParser(envVars.jwt.cookieSecret));
+      // this.app.use(cookieParser(envVars.jwt.cookieSecret));
 
       // * parse urlencoded request body
       this.app.use(express.urlencoded({ extended: false }));

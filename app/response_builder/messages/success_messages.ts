@@ -14,4 +14,18 @@ export const successMessage = {
     USER_ALREADY_VERIFIED: 'User Already Verified',
     USER_NOT_EXIST: 'This email is not exist, please try with different email',
   },
+
+  zone: {
+    // * Zone Module
+
+    ZONE_CREATED: 'Zone created successfully!',
+  },
+
+  powerPlant: {
+    PLANT_DETAILS_FOUND: 'Plants Detail fetched successfully',
+  },
+
+  dbSyncUp: {
+    SYNC_UP_SUCCESS: 'Data synced up successfully',
+  },
 };

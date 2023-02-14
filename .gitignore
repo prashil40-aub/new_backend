@@ -8,3 +8,4 @@ private.pem
 env/
 .vscode
 package-lock.json
+.history/*

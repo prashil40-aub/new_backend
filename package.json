@@ -1,5 +1,5 @@
 {
-  "name": "boilerplate",
+  "name": "SolarLink",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -30,9 +30,10 @@
     "seed": "tsnd -r tsconfig-paths/register app/db/seeds/index.ts",
     "seed:prod": "node -r ts-node/register -r tsconfig-paths/register dist/db/seeds/index.js"
   },
-  "author": "",
+  "author": "Aubergine Solutions",
   "license": "ISC",
   "dependencies": {
+    "@joi/date": "^2.1.0",
     "@sendgrid/mail": "^7.6.2",
     "bcrypt": "^5.0.1",
     "command-line-args": "^5.2.1",
@@ -47,11 +48,14 @@
     "jet-logger": "^1.1.5",
     "joi": "^17.6.0",
     "jsonwebtoken": "^8.5.1",
+    "lodash": "^4.17.21",
+    "moment": "^2.29.4",
+    "mongoose": "^6.5.5",
     "morgan": "^1.10.0",
     "multer": "^1.4.4",
     "pg": "^8.7.3",
     "pg-hstore": "^2.3.4",
-    "sequelize": "^6.17.0"
+    "ts-node": "^10.9.1"
   },
   "devDependencies": {
     "@commitlint/cli": "^16.2.3",
@@ -63,6 +67,7 @@
     "@types/cors": "^2.8.12",
     "@types/express": "^4.17.13",
     "@types/jsonwebtoken": "^8.5.8",
+    "@types/mongoose": "^5.11.97",
     "@types/morgan": "^1.9.3",
     "@types/multer": "^1.4.7",
     "@types/node": "^17.0.22",
@@ -81,7 +86,7 @@
     "husky": "^7.0.0",
     "prettier": "^2.6.0",
     "sequelize-cli": "^6.4.1",
-    "ts-node-dev": "^1.1.8",
+    "ts-node-dev": "^2.0.0",
     "typescript": "^4.6.3"
   }
 }

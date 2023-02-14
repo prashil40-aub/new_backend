@@ -1,13 +1,18 @@
 import type { Response } from 'express';
 import HttpStatusCodes from 'http-status-codes';
 import type { WithRequired } from 'app/types';
+import { IApiError } from './api_errors';
 
 export interface IApiResponse<T = unknown, U = unknown> {
   type?: string;
   data?: T;
   message?: string;
   status?: number;
+  statusCode?: number;
   moreInfo?: U;
+  success?: boolean;
+  error?: IApiError;
+  responseType?: string;
 }
 
 export default class ApiResponse {
@@ -49,5 +54,19 @@ export default class ApiResponse {
     res.status(apiRes.status);
     res.json(apiRes);
     return res;
+  }
+
+  public static billingApiResponse({
+    data,
+    status,
+  }: IApiResponse): WithRequired<IApiResponse, 'statusCode'> {
+    const r: WithRequired<IApiResponse, 'statusCode'> = {
+      // type: type || 'OK_RESPONSE',
+      data: (data as any).result,
+      statusCode: status || HttpStatusCodes.OK,
+      message: 'Success',
+      success: true,
+    };
+    return r;
   }
 }

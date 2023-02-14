@@ -1,6 +1,6 @@
 import type { NextFunction, Request, Response } from 'express';
 import { Jwt, logger } from '@/libs';
-import { User } from '@/models';
+// import { User } from '@/models';
 import { ApiErrors } from '@/response_builder';
 import { TokenUtils } from '@/utils';
 
@@ -21,14 +21,17 @@ export default class AuthMiddleware {
         return;
       }
       const tokenVerificationRes = await Jwt.verify(token);
-      const user = await User.findByPk(tokenVerificationRes.user_id);
+      const user = {
+        id: 'abc',
+        token: tokenVerificationRes,
+      };
       if (!user || !user.id) {
         const er = ApiErrors.newNotAuthorizedError('Not authorized');
         ApiErrors.sendError(res, er);
         return;
       }
       // append user data to request object
-      (req as Request & { user: User }).user = user;
+      // (req as Request & { user: User }).user = user;
       next();
     } catch (err) {
       logger.err('# Error while authenticating a user in AuthMiddleware.isAuthenticated()', err);

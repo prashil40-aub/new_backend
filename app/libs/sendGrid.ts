@@ -1,10 +1,11 @@
 import sgMail from '@sendgrid/mail';
-import { envVars } from '@/config';
+// import { envVars } from '@/config';
 import type { IResultAndError } from '@/interfaces';
 import { ApiErrors } from '@/response_builder';
 import logger from './logger';
 
-sgMail.setApiKey(envVars.email.smtp.auth.pass || '');
+sgMail.setApiKey('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');
+// sgMail.setApiKey(envVars.email.smtp.auth.pass || '');
 
 export type IEmailOptions = {
   html: string;
@@ -17,8 +18,11 @@ class EmailService {
       const { html, attachment, subject } = emailOptions;
       let msg: sgMail.MailDataRequired;
       const requiredProperties: Omit<sgMail.MailDataRequired, 'content'> = {
-        to: envVars.email.from,
-        from: envVars.email.from,
+        // to: envVars.email.from,
+        // from: envVars.email.from,
+        to: 'abc@gmail.com',
+        from: 'abc@gmail.com',
+
         subject: subject || 'Sample Email',
       };
       if (attachment) {

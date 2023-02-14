@@ -6,7 +6,7 @@ import { ApiErrors, ApiResponse } from '@/response_builder';
 import { TokenUtils } from '@/utils';
 import type { IUserSignupVM, IUserVM } from '../user';
 import { UserSignupViewModel, UserViewModel } from '../user';
-import authService from './auth.service';
+// import authService from './auth.service';
 
 class AuthController {
   /**
@@ -14,13 +14,15 @@ class AuthController {
    ** Register a user.
    */
 
-  public static register = async (req: Request, res: Response) => {
+  public static register = (req: Request, res: Response) => {
     try {
       const user = new UserSignupViewModel(req.body as IUserSignupVM);
 
       // user signup call
-      const registerRes = await authService.register(user);
-
+      // const registerRes = await authService.register(user);
+      const registerRes = {
+        error: null,
+      };
       // send a email to new user
       const emailOptions: IEmailOptions = {
         subject: 'Welcome',
@@ -33,7 +35,9 @@ class AuthController {
       }
 
       // crating a response object
-      const userVM = new UserViewModel(registerRes.result as unknown as IUserVM);
+      const userVM = {
+        error: null,
+      };
       const r = ApiResponse.newResponse({
         data: userVM,
         message: 'User has Registered successfully',
@@ -50,11 +54,17 @@ class AuthController {
    ** POST /login
    ** login's a user.
    */
-  public static login = async (req: Request, res: Response) => {
+  public static login = (req: Request, res: Response) => {
     try {
       const { email, password } = req.body as IUser;
 
-      const loginRes = await authService.login(email as string, password as string);
+      // const loginRes = await authService.login(email as string, password as string);
+      const loginRes = {
+        error: null,
+        email,
+        password,
+        result: null,
+      };
       if (loginRes.error) {
         ApiErrors.sendError(res, loginRes.error);
         return;
