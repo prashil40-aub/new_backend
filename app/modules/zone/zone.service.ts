@@ -9,7 +9,7 @@ class ZoneService {
   public static createZone = async (zoneData: IZone): Promise<IResultAndError<IZone | null>> => {
     try {
       logger.info('==> 1:: Creating Zone');
-
+      logger.info('Zone===>', JSON.stringify(Zone, null, 2));
       // * query helper
       const zone = await Query.save(Zone, zoneData);
 

@@ -20,4 +20,12 @@ export const successMessage = {
 
     ZONE_CREATED: 'Zone created successfully!',
   },
+
+  powerPlant: {
+    PLANT_DETAILS_FOUND: 'Plants Detail fetched successfully',
+  },
+
+  dbSyncUp: {
+    SYNC_UP_SUCCESS: 'Data synced up successfully',
+  },
 };

@@ -1,12 +1,14 @@
 import type { Response } from 'express';
 import HttpStatusCodes from 'http-status-codes';
+import { WithRequired } from 'app/types';
 
-enum apiErrorTypes {
+export enum apiErrorTypes {
   INTERNAL_SERVER_ERROR = 'INTERNAL_SERVER_ERROR',
   BAD_REQUEST = 'BAD_REQUEST',
   NOT_FOUND = 'NOT_FOUND',
   UNAUTHORIZED = 'UNAUTHORIZED',
   NOT_AUTHENTICATED = 'NOT_AUTHENTICATED',
+  INVALID_ID = 'INVALID_ID',
 }
 
 export interface IApiError {
@@ -16,6 +18,13 @@ export interface IApiError {
   success: boolean;
 }
 
+export interface IApiBillingError<T = unknown> {
+  data?: T;
+  message?: string;
+  statusCode?: number;
+  error?: IApiError | any;
+  responseType?: string;
+}
 export default class ApiErrors extends Error {
   /**
    ** Throws new InternalServerError
@@ -95,6 +104,19 @@ export default class ApiErrors extends Error {
   public static sendError(res: Response, error: IApiError) {
     res.status(error.status);
     res.json(error);
+    return res;
+  }
+
+  public static billingApiErrorResponse(res: Response, error: IApiError) {
+    const r: WithRequired<IApiBillingError, 'statusCode'> = {
+      statusCode: error.status,
+      error: 'Bad Request',
+      message: error.message,
+      responseType: error.type,
+    };
+
+    res.status(r.statusCode);
+    res.json(r);
     return res;
   }
 }

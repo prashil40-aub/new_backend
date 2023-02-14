@@ -7,7 +7,7 @@ import helmet from 'helmet';
 import mongoose from 'mongoose';
 import morgan from 'morgan';
 import { envVars, ENV_MODE, paths, ROUTE_PREFIX } from '@/config';
-// import { DB } from '@/db';
+// import { DB, prodCloneDB } from '@/db';
 import { logger } from '@/libs';
 import { errorMiddleware } from '@/middleware';
 // import * as Models from '@/models';
@@ -49,16 +49,18 @@ class App {
   }
 
   // * setup Database Connection
-  public async setUpDatabase() {
+  public static setUpDatabase() {
     try {
       // this.db.init();
       // Models.default.setupModelsRelation();
       // this.db.sync({ alter: false }).catch(logger.err);
       // this.db.connect().catch(logger.err);
       // this.db.connect()
-      await this.db.connect(envVars.db.url).then((res) => {
-        logger.info('res', res);
-      });
+      // await this.db.connect(envVars.db.url).then((res) => {
+      //   logger.info('res', res);
+      // });
+      // DB();
+      // prodCloneDB();
     } catch (err) {
       logger.info('+-------------------------------------------------------------+');
       logger.err('# Error while setting up Database', err);

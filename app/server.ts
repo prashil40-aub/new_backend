@@ -6,7 +6,7 @@ const main = () => {
   const app = new App();
 
   // * connect to db
-  app.setUpDatabase();
+  App.setUpDatabase();
 
   // * start express
   app.listen();
